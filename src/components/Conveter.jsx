@@ -22,7 +22,6 @@ const Conveter = () => {
         } catch (error) {
             console.log(error);
             setLoading(false);
-
             setError(error)
         }
 
@@ -100,7 +99,7 @@ const Conveter = () => {
                         error &&
                         <p className='text-red-500 font-black  text-center'>{error.message}</p>
                     }
-                    
+
                 </div>
             </div>
         </div >
