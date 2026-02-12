@@ -11,17 +11,19 @@ const Conveter = () => {
 
 
     const handleConvert = async () => {
-
         setLoading(true)
         try {
-            const res = await currencyConverter(fromAmount, toAmount, amount);
-            console.log(res.data);
-            // setConvertedAmount(res)
-            const { conversion_result } = res.data
-            setConvertedAmount(conversion_result)
+
+            if (amount > 0) {
+                const res = await currencyConverter(fromAmount, toAmount, amount);
+                const { conversion_result } = res.data
+                setConvertedAmount(conversion_result)
+            }
+            // console.log(res.data);
         } catch (error) {
             console.log(error);
             setLoading(false);
+            setError(error)
         }
         finally {
             setLoading(false)
@@ -29,6 +31,7 @@ const Conveter = () => {
     }
 
     useEffect(() => {
+
         handleConvert();
     }, [fromAmount, toAmount, amount])
 
@@ -46,6 +49,7 @@ const Conveter = () => {
                         <label className="text-xs font-bold text-slate-500 uppercase ml-1">Amount</label>
                         <input
                             value={amount}
+                            min={1}
                             onChange={(e) => setAmount(e.target.value)}
                             type="number"
                             placeholder="0.00"
@@ -88,7 +92,6 @@ const Conveter = () => {
                         className="disabled:bg-gray-300 disabled:cursor-not-allowed disabled:active:scale-[1] w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md active:scale-[0.98] mt-2">
                         {loading ? "Converting..." : "Convert"}
                     </button>
-
                     {
                         convertedAmount &&
                         <div className="mt-8 p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100">
@@ -98,6 +101,7 @@ const Conveter = () => {
                             </p>
                         </div>
                     }
+
                 </div>
             </div>
         </div >
