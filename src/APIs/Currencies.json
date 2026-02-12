@@ -1,0 +1,50 @@
+[
+    {
+        "currencyName": "Australian Dollar",
+        "currency": "AUD"
+    },
+    {
+        "currencyName": "British Pound Sterling",
+        "currency": "GBP"
+    },
+    {
+        "currencyName": "Euro",
+        "currency": "EUR"
+    },
+    {
+        "currencyName": "Indian Rupee",
+        "currency": "INR"
+    },
+    {
+        "currencyName": "United States Dollar",
+        "currency": "USD"
+    },
+    {
+        "currencyName": "Japanese Yen",
+        "currency": "JPY"
+    },
+    {
+        "currencyName": "Canadian Dollar",
+        "currency": "CAD"
+    },
+    {
+        "currencyName": "Swiss Franc",
+        "currency": "CHF"
+    },
+    {
+        "currencyName": "Chinese Yuan Renminbi",
+        "currency": "CNY"
+    },
+    {
+        "currencyName": "Hong Kong Dollar",
+        "currency": "HKD"
+    },
+    {
+        "currencyName": "New Zealand Dollar",
+        "currency": "NZD"
+    },
+    {
+        "currencyName": "Pakistani Rupee",
+        "currency": "PKR"
+    }
+]

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { currencyConverter } from '../APIs/api';
+import currencies from '../APIs/Currencies.json'
 
 const Conveter = () => {
 
@@ -7,32 +8,29 @@ const Conveter = () => {
     const [loading, setLoading] = useState(false);
     const [fromAmount, setFromAmount] = useState("USD");
     const [toAmount, setToAmount] = useState("INR");
-    const [convertedAmount, setConvertedAmount] = useState(null)
-
-
+    const [convertedAmount, setConvertedAmount] = useState(null);
+    const [error, setError] = useState("");
     const handleConvert = async () => {
         setLoading(true)
         try {
-
             if (amount > 0) {
                 const res = await currencyConverter(fromAmount, toAmount, amount);
                 const { conversion_result } = res.data
                 setConvertedAmount(conversion_result)
+                // console.log(res.data);
             }
-            // console.log(res.data);
         } catch (error) {
             console.log(error);
             setLoading(false);
+
             setError(error)
         }
-        finally {
-            setLoading(false)
-        }
+
     }
 
     useEffect(() => {
-
         handleConvert();
+
     }, [fromAmount, toAmount, amount])
 
     return (
@@ -64,11 +62,9 @@ const Conveter = () => {
                                 onChange={(e) => setFromAmount(e.target.value)}
                                 value={fromAmount}
                                 className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl p-3 outline-none focus:border-indigo-500 cursor-pointer">
-                                <option value='USD'>USD</option>
-                                <option value='INR'>INR</option>
-                                <option value='EUR'>EUR</option>
-                                <option value='GBP'>GBP</option>
-                                <option value='AUD'>AUD</option>
+                                {currencies.map((currency, index) => {
+                                    return <option value={currency.currency} key={index}>{currency.currencyName}</option>
+                                })}
                             </select>
                         </div>
                         <div className="flex flex-col gap-1.5">
@@ -77,21 +73,20 @@ const Conveter = () => {
                                 onChange={(e) => setToAmount(e.target.value)}
                                 value={toAmount}
                                 className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl p-3 outline-none focus:border-indigo-500 cursor-pointer">
-                                <option value='USD'>USD</option>
-                                <option value='EUR'>EUR</option>
-                                <option value='GBP'>GBP</option>
-                                <option value='AUD'>AUD</option>
-                                <option value='INR'>INR</option>
+                                {currencies.map((currency, index) => {
+                                    return <option value={currency.currency} key={index}>{currency.currencyName}</option>
+                                })}
+
                             </select>
                         </div>
                     </div>
 
-                    <button
+                    {/* <button
                         disabled={amount <= 0 || loading}
                         onClick={handleConvert}
                         className="disabled:bg-gray-300 disabled:cursor-not-allowed disabled:active:scale-[1] w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md active:scale-[0.98] mt-2">
                         {loading ? "Converting..." : "Convert"}
-                    </button>
+                    </button> */}
                     {
                         convertedAmount &&
                         <div className="mt-8 p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100">
@@ -101,7 +96,11 @@ const Conveter = () => {
                             </p>
                         </div>
                     }
-
+                    {
+                        error &&
+                        <p className='text-red-500 font-black  text-center'>{error.message}</p>
+                    }
+                    
                 </div>
             </div>
         </div >
