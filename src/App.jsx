@@ -1,11 +1,11 @@
 import './App.css'
-import Conveter from './components/Conveter'
+import Converter from './components/Converter'
 
 function App() {
 
   return (
     <>
-      <Conveter/>
+      <Converter />
     </>
   )
 }

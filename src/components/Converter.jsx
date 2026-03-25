@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { currencyConverter } from '../APIs/api';
 import currencies from '../APIs/Currencies.json'
 
-const Conveter = () => {
+const Converter = () => {
 
     const [amount, setAmount] = useState("");
     const [loading, setLoading] = useState(false);
@@ -17,7 +17,6 @@ const Conveter = () => {
                 const res = await currencyConverter(fromAmount, toAmount, amount);
                 const { conversion_result } = res.data
                 setConvertedAmount(conversion_result)
-                // console.log(res.data);
             }
         } catch (error) {
             console.log(error);
@@ -26,15 +25,23 @@ const Conveter = () => {
         }
 
     }
+    const handleSwap = () => {
+        setFromAmount(toAmount);
+        setToAmount(fromAmount);
+    };
 
     useEffect(() => {
         handleConvert();
-
     }, [fromAmount, toAmount, amount])
 
     return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-7">
-            <div className="w-full max-w-sm bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
+        <div className="min-h-screen flex items-center justify-center p-7 relative overflow-hidden">
+
+            <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/592753/pexels-photo-592753.jpeg')] bg-cover bg-center bg-no-repeat blur-xs scale-110"></div>
+
+            <div className="absolute inset-0 bg-black/20"></div>
+
+            <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
 
                 <div className="mb-8">
                     <h2 className="text-2xl font-black text-slate-900 tracking-tight">Currency Converter</h2>
@@ -54,38 +61,45 @@ const Conveter = () => {
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-[1fr_auto_1fr] gap-3 items-end">
+
                         <div className="flex flex-col gap-1.5">
                             <label className="text-xs font-bold text-slate-500 uppercase ml-1">From</label>
                             <select
                                 onChange={(e) => setFromAmount(e.target.value)}
                                 value={fromAmount}
                                 className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl p-3 outline-none focus:border-indigo-500 cursor-pointer">
-                                {currencies.map((currency, index) => {
-                                    return <option value={currency.currency} key={index}>{currency.currencyName}</option>
-                                })}
+                                {currencies.map((currency, index) => (
+                                    <option value={currency.currency} key={index}>
+                                        {currency.currencyName}
+                                    </option>
+                                ))}
                             </select>
                         </div>
+
+                        <button
+                            onClick={handleSwap}
+                            className="mb-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-3 py-2 font-bold active:scale-95 transition"
+                        >
+                            ⇄
+                        </button>
+
                         <div className="flex flex-col gap-1.5">
                             <label className="text-xs font-bold text-slate-500 uppercase ml-1">To</label>
                             <select
                                 onChange={(e) => setToAmount(e.target.value)}
                                 value={toAmount}
                                 className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl p-3 outline-none focus:border-indigo-500 cursor-pointer">
-                                {currencies.map((currency, index) => {
-                                    return <option value={currency.currency} key={index}>{currency.currencyName}</option>
-                                })}
-
+                                {currencies.map((currency, index) => (
+                                    <option value={currency.currency} key={index}>
+                                        {currency.currencyName}
+                                    </option>
+                                ))}
                             </select>
                         </div>
+
                     </div>
 
-                    {/* <button
-                        disabled={amount <= 0 || loading}
-                        onClick={handleConvert}
-                        className="disabled:bg-gray-300 disabled:cursor-not-allowed disabled:active:scale-[1] w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md active:scale-[0.98] mt-2">
-                        {loading ? "Converting..." : "Convert"}
-                    </button> */}
                     {
                         convertedAmount &&
                         <div className="mt-8 p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100">
@@ -103,7 +117,8 @@ const Conveter = () => {
                 </div>
             </div>
         </div >
+
     );
 };
 
-export default Conveter;
+export default Converter;
